@@ -1,7 +1,7 @@
-import { LinkBioPage } from "./pages/LinkBioPage"
+import { AlphaInsightPage } from "./pages/AlphaInsightPage"
 
 function App() {
-  return <LinkBioPage />
+  return <AlphaInsightPage />
 }
 
 export default App
