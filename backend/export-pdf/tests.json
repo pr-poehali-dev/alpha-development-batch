@@ -1,0 +1,18 @@
+{
+  "tests": [
+    {
+      "name": "Export report",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "query": "Топ регионы по обороту",
+        "answer": "Москва занимает первое место с долей 42%.",
+        "key_numbers": ["42% — доля Москвы"],
+        "user_name": "Тест"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {"url": "string"},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

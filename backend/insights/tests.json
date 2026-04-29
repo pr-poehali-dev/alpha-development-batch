@@ -1,0 +1,19 @@
+{
+  "tests": [
+    {
+      "name": "Get insights requires user_id",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 400,
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Create insight without valid user returns error",
+      "method": "POST",
+      "path": "/",
+      "body": {"text": "Тестовый инсайт"},
+      "expectedStatus": 400,
+      "bodyMatcher": "partial"
+    }
+  ]
+}

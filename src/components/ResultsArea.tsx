@@ -1,46 +1,37 @@
 import { motion, AnimatePresence } from "framer-motion"
-import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts"
+import { LineChart, Line, XAxis, Tooltip, ResponsiveContainer } from "recharts"
+import { Download, Loader2, Star } from "lucide-react"
 
-const MOCK_RESULT = {
-  text: [
-    {
-      id: 1,
-      content: "Найдено",
-      highlight: "14 компаний",
-      rest: " с высоким риском оттока, которые платили в прошлом квартале.",
-    },
-    {
-      id: 2,
-      content: "Рекомендуем обратить внимание на",
-      highlight: "3 из них",
-      rest: ", так как их активность упала на",
-      highlight2: " 40 %",
-      rest2: " — это критический порог для данного сегмента.",
-    },
-    {
-      id: 3,
-      content: "Совокупный оборот группы риска составляет",
-      highlight: "₽ 127 млн",
-      rest: " — своевременное вмешательство позволит удержать до",
-      highlight2: " 85 % выручки",
-      rest2: ".",
-    },
-  ],
-  chartData: [
-    { name: "Янв", value: 42 },
-    { name: "Фев", value: 58 },
-    { name: "Мар", value: 51 },
-    { name: "Апр", value: 67 },
-    { name: "Май", value: 48 },
-    { name: "Июн", value: 34 },
-  ],
-}
+const MOCK_CHART = [
+  { name: "Янв", value: 42 },
+  { name: "Фев", value: 58 },
+  { name: "Мар", value: 51 },
+  { name: "Апр", value: 67 },
+  { name: "Май", value: 48 },
+  { name: "Июн", value: 34 },
+]
 
 interface ResultsAreaProps {
   visible: boolean
+  answer?: string
+  keyNumbers?: string[]
+  chartLabel?: string
+  exporting?: boolean
+  onExport?: () => void
+  onSaveInsight?: (text: string) => void
 }
 
-export function ResultsArea({ visible }: ResultsAreaProps) {
+export function ResultsArea({
+  visible,
+  answer,
+  keyNumbers = [],
+  chartLabel = "Динамика",
+  exporting = false,
+  onExport,
+  onSaveInsight,
+}: ResultsAreaProps) {
+  const paragraphs = answer ? answer.split("\n").filter((p) => p.trim()) : []
+
   return (
     <AnimatePresence>
       {visible && (
@@ -62,57 +53,88 @@ export function ResultsArea({ visible }: ResultsAreaProps) {
                 border: "1px solid rgba(255,255,255,0.08)",
               }}
             >
-              <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-                {MOCK_RESULT.text.map((para) => (
-                  <p
-                    key={para.id}
-                    style={{ color: "#ffffff", fontSize: 15, lineHeight: 1.7, margin: 0 }}
-                  >
-                    {para.content}{" "}
-                    <span style={{ color: "#ff6b35", fontWeight: 600 }}>{para.highlight}</span>
-                    {para.rest}
-                    {para.highlight2 && (
-                      <span style={{ color: "#ff6b35", fontWeight: 600 }}>{para.highlight2}</span>
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                {paragraphs.map((para, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                    <p style={{ color: "#ffffff", fontSize: 15, lineHeight: 1.7, margin: 0, flex: 1 }}>
+                      {para}
+                    </p>
+                    {onSaveInsight && (
+                      <motion.button
+                        title="Сохранить в блокнот"
+                        onClick={() => onSaveInsight(para)}
+                        style={{ background: "none", border: "none", cursor: "pointer", color: "#555", padding: "4px 0", flexShrink: 0, marginTop: 2 }}
+                        whileHover={{ color: "#F03224" }}
+                      >
+                        <Star size={14} />
+                      </motion.button>
                     )}
-                    {para.rest2}
-                  </p>
+                  </div>
                 ))}
               </div>
 
+              {keyNumbers.length > 0 && (
+                <div style={{ marginTop: 20, display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {keyNumbers.map((num, i) => (
+                    <span
+                      key={i}
+                      style={{
+                        background: "rgba(240,50,36,0.12)",
+                        border: "1px solid rgba(240,50,36,0.3)",
+                        borderRadius: 8,
+                        padding: "4px 12px",
+                        color: "#F03224",
+                        fontWeight: 600,
+                        fontSize: 13,
+                      }}
+                    >
+                      {num}
+                    </span>
+                  ))}
+                </div>
+              )}
+
               <div style={{ marginTop: 24, height: 100 }}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={MOCK_RESULT.chartData}>
-                    <XAxis
-                      dataKey="name"
-                      tick={{ fill: "#666", fontSize: 11 }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
+                  <LineChart data={MOCK_CHART}>
+                    <XAxis dataKey="name" tick={{ fill: "#666", fontSize: 11 }} axisLine={false} tickLine={false} />
                     <Tooltip
-                      contentStyle={{
-                        background: "#2a2a2a",
-                        border: "1px solid #3a3a3a",
-                        borderRadius: 8,
-                        color: "#fff",
-                        fontSize: 12,
-                      }}
-                      cursor={{ stroke: "#00d1b2", strokeWidth: 1 }}
+                      contentStyle={{ background: "#2a2a2a", border: "1px solid #3a3a3a", borderRadius: 8, color: "#fff", fontSize: 12 }}
+                      cursor={{ stroke: "#F03224", strokeWidth: 1 }}
                     />
-                    <Line
-                      type="monotone"
-                      dataKey="value"
-                      stroke="#00d1b2"
-                      strokeWidth={2}
-                      dot={false}
-                      activeDot={{ r: 4, fill: "#00d1b2" }}
-                    />
+                    <Line type="monotone" dataKey="value" stroke="#F03224" strokeWidth={2} dot={false} activeDot={{ r: 4, fill: "#F03224" }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
+              <p style={{ color: "#555", fontSize: 12, margin: "8px 0 0" }}>{chartLabel}</p>
 
-              <p style={{ color: "#555", fontSize: 12, marginTop: 8, margin: "8px 0 0" }}>
-                Активность клиентов за последние 6 месяцев
-              </p>
+              {onExport && (
+                <div style={{ marginTop: 20, display: "flex", justifyContent: "flex-end" }}>
+                  <motion.button
+                    onClick={onExport}
+                    disabled={exporting}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      background: "rgba(240,50,36,0.12)",
+                      border: "1px solid rgba(240,50,36,0.3)",
+                      borderRadius: 8,
+                      padding: "8px 16px",
+                      color: "#F03224",
+                      fontWeight: 600,
+                      fontSize: 13,
+                      cursor: exporting ? "not-allowed" : "pointer",
+                      opacity: exporting ? 0.7 : 1,
+                    }}
+                    whileHover={{ background: "rgba(240,50,36,0.2)" }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    {exporting ? <Loader2 size={14} className="animate-spin" /> : <Download size={14} />}
+                    {exporting ? "Генерация…" : "Скачать отчёт"}
+                  </motion.button>
+                </div>
+              )}
             </div>
           </div>
         </motion.div>

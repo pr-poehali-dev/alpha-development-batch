@@ -1,0 +1,21 @@
+{
+  "tests": [
+    {
+      "name": "Analyze query",
+      "method": "POST",
+      "path": "/",
+      "body": {"query": "Топ-5 регионов по обороту за последний квартал"},
+      "expectedStatus": 200,
+      "expectedBody": {"answer": "string"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Empty query returns error",
+      "method": "POST",
+      "path": "/",
+      "body": {"query": ""},
+      "expectedStatus": 400,
+      "bodyMatcher": "partial"
+    }
+  ]
+}

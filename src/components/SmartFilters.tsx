@@ -68,7 +68,7 @@ export function SmartFilters({ visible }: SmartFiltersProps) {
                       top: 0,
                       bottom: 0,
                       width: 3,
-                      background: "#00d1b2",
+                      background: "#F03224",
                       borderRadius: "0 2px 2px 0",
                     }}
                   />
@@ -78,8 +78,8 @@ export function SmartFilters({ visible }: SmartFiltersProps) {
                     width: 18,
                     height: 18,
                     borderRadius: "50%",
-                    background: f.active ? "#00d1b2" : "transparent",
-                    border: f.active ? "2px solid #00d1b2" : "2px solid #555",
+                    background: f.active ? "#F03224" : "transparent",
+                    border: f.active ? "2px solid #F03224" : "2px solid #555",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -98,7 +98,7 @@ export function SmartFilters({ visible }: SmartFiltersProps) {
                     color: "#ffffff",
                     fontSize: 14,
                     fontWeight: f.active ? 600 : 400,
-                    borderBottom: f.active ? "1px solid #00d1b2" : "1px solid transparent",
+                    borderBottom: f.active ? "1px solid #F03224" : "1px solid transparent",
                     lineHeight: 1.4,
                     transition: "all 0.15s",
                   }}

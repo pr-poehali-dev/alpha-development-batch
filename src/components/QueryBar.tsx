@@ -30,13 +30,13 @@ export function QueryBar({ value, onChange, onSubmit, isLoading }: QueryBarProps
           height: 56,
           background: "#2a2a2a",
           borderRadius: 12,
-          border: focused ? "2px solid #00d1b2" : "2px solid transparent",
+          border: focused ? "2px solid #F03224" : "2px solid transparent",
           transition: "border-color 0.2s",
           display: "flex",
           alignItems: "center",
           paddingLeft: 20,
           paddingRight: 16,
-          boxShadow: focused ? "0 0 0 3px rgba(0,209,178,0.15)" : "none",
+          boxShadow: focused ? "0 0 0 3px rgba(240,50,36,0.15)" : "none",
           position: "relative",
         }}
         onClick={() => inputRef.current?.focus()}
@@ -69,7 +69,7 @@ export function QueryBar({ value, onChange, onSubmit, isLoading }: QueryBarProps
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
             >
-              <Loader2 size={20} color="#00d1b2" className="animate-spin" />
+              <Loader2 size={20} color="#F03224" className="animate-spin" />
             </motion.div>
           ) : (
             <motion.button
@@ -87,7 +87,7 @@ export function QueryBar({ value, onChange, onSubmit, isLoading }: QueryBarProps
                 display: "flex",
                 alignItems: "center",
               }}
-              whileHover={{ color: "#00d1b2" }}
+              whileHover={{ color: "#F03224" }}
               title="Голосовой ввод"
             >
               <Mic size={20} />
